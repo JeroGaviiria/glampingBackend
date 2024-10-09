@@ -2,43 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cabana;
+use App\Models\Cabanas;
 use Illuminate\Http\Request;
 
 class CabanaController extends Controller
-{
+{   
     public function index()
     {
-        return "Hola mundo"; 
+        return Cabanas::with('nivel')->get();
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'nombre' => 'required|string|max:100',
-            'nivel' => 'required|in:VIP,Estándar,Económico',
+            'nivel_id' => 'required|exists:cabana_niveles,id',
             'aforo' => 'required|integer',
         ]);
 
-        $cabana = Cabana::create($request->all());
-        return response()->json($cabana, 201);
+        return Cabanas::create($request->all());
     }
 
-    public function show($id)
+    public function show(Cabanas $cabana)
     {
-        return Cabana::findOrFail($id);
+        return $cabana->load('nivel');
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Cabanas $cabana)
     {
-        $cabana = Cabana::findOrFail($id);
+        $request->validate([
+            'nombre' => 'required|string|max:100',
+            'nivel_id' => 'required|exists:cabana_niveles,id',
+            'aforo' => 'required|integer',
+        ]);
+
         $cabana->update($request->all());
-        return response()->json($cabana, 200);
+        return $cabana;
     }
 
-    public function destroy($id)
+    public function destroy(Cabanas $cabana)
     {
-        Cabana::destroy($id);
-        return response()->json(null, 204);
+        $cabana->delete();
+        return response()->noContent();
     }
 }

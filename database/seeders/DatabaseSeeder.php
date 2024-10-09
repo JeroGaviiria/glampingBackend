@@ -10,10 +10,14 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
+
+
+        
         $this->call([
             UsuariosSeeder::class,
-            CabanasSeeder::class,
             ServiciosSeeder::class,
+            CabanaNivelesSeeder::class, 
+            CabanasSeeder::class,
             CabanaServiciosSeeder::class,
             ReservasSeeder::class,
             TokensSeeder::class,

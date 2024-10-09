@@ -10,10 +10,9 @@ class CabanasSeeder extends Seeder
     public function run()
     {
         DB::table('cabanas')->insert([
-            ['nombre' => 'Cabaña de Montaña', 'nivel' => 'VIP', 'aforo' => 4],
-            ['nombre' => 'Cabaña del Lago', 'nivel' => 'Estándar', 'aforo' => 6],
+            ['nombre' => 'Cabaña Los Robles', 'aforo' => 4, 'nivel_id' => 1], // VIP
+            ['nombre' => 'Cabaña Las Palmas', 'aforo' => 3, 'nivel_id' => 2], // Estándar
+            ['nombre' => 'Cabaña La Montaña', 'aforo' => 6, 'nivel_id' => 3], // Económico
         ]);
     }
 }
-
-
