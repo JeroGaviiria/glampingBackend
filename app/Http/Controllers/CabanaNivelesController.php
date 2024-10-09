@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CabanaNiveles;
-use Illuminate\Http\Request;
+use App\Http\Requests\CabanaNivelesRequest;
 
 class CabanaNivelesController extends Controller
 {
@@ -12,32 +12,25 @@ class CabanaNivelesController extends Controller
         return CabanaNiveles::all();
     }
 
-    public function store(Request $request)
+    public function store(CabanaNivelesRequest $request)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:100',
-            'descripcion' => 'nullable|string|max:255',
-        ]);
-
-        $cabanaNivel = CabanaNiveles::create($request->all());
-        return response()->json($cabanaNivel, 201);
+        return CabanaNiveles::create($request->validated());
     }
 
-    public function show($id)
+    public function show(CabanaNiveles $nivel)
     {
-        return CabanaNiveles::findOrFail($id);
+        return $nivel;
     }
 
-    public function update(Request $request, $id)
+    public function update(CabanaNivelesRequest $request, CabanaNiveles $nivel)
     {
-        $cabanaNivel = CabanaNiveles::findOrFail($id);
-        $cabanaNivel->update($request->all());
-        return response()->json($cabanaNivel, 200);
+        $nivel->update($request->validated());
+        return $nivel;
     }
 
-    public function destroy($id)
+    public function destroy(CabanaNiveles $nivel)
     {
-        CabanaNiveles::destroy($id);
+        $nivel->delete();
         return response()->json(null, 204);
     }
 }

@@ -15,7 +15,7 @@ class CabanasFactory extends Factory
         return [
             'nombre' => $this->faker->word(),
             'aforo' => $this->faker->numberBetween(1, 10),
-            'nivel_id' => CabanaNiveles::factory(),  // Relación con CabanaNiveles
+            'nivel_id' => CabanaNiveles::factory(), // Esto crea automáticamente un CabanaNiveles y utiliza su ID
         ];
     }
 }

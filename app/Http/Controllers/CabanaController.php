@@ -3,24 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cabanas;
-use Illuminate\Http\Request;
+use App\Http\Requests\CabanaRequest;
 
 class CabanaController extends Controller
-{   
+{
     public function index()
     {
         return Cabanas::with('nivel')->get();
     }
 
-    public function store(Request $request)
+    public function store(CabanaRequest $request)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:100',
-            'nivel_id' => 'required|exists:cabana_niveles,id',
-            'aforo' => 'required|integer',
-        ]);
-
-        return Cabanas::create($request->all());
+        return Cabanas::create($request->validated());
     }
 
     public function show(Cabanas $cabana)
@@ -28,21 +22,15 @@ class CabanaController extends Controller
         return $cabana->load('nivel');
     }
 
-    public function update(Request $request, Cabanas $cabana)
+    public function update(CabanaRequest $request, Cabanas $cabana)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:100',
-            'nivel_id' => 'required|exists:cabana_niveles,id',
-            'aforo' => 'required|integer',
-        ]);
-
-        $cabana->update($request->all());
+        $cabana->update($request->validated());
         return $cabana;
     }
 
     public function destroy(Cabanas $cabana)
     {
         $cabana->delete();
-        return response()->noContent();
+        return response()->json(null, 204);
     }
 }
