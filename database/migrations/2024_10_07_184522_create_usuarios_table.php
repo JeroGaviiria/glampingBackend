@@ -13,7 +13,7 @@ class CreateUsuariosTable extends Migration
             $table->string('nombre');
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('tipo', ['administrador', 'cliente']);
+            $table->enum('tipo', [ 'cliente']);
             $table->timestamps();
         });
     }

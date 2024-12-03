@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CabanaRequest extends FormRequest
 {
@@ -16,9 +16,9 @@ class CabanaRequest extends FormRequest
     public function rules()
     {
         return [
-            'nombre' => 'required|string|max:100',
-            'aforo' => 'required|integer',
-            'nivel_id' => 'required|exists:cabana_niveles,id', // Validación para asegurarse de que nivel_id existe
+            'nombre' => 'required|string|min:5|max:40',
+            'aforo' => 'required|integer|min:1|max:10',
+            'nivel_id' => 'required|integer|exists:cabana_niveles,id', // Validación para asegurarse de que nivel_id existe
         ];
     }
 
@@ -27,4 +27,3 @@ class CabanaRequest extends FormRequest
         throw new HttpResponseException(response()->json($validator->errors(), 422));
     }
 }
-

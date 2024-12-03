@@ -15,9 +15,11 @@ class CabanaNivelesRequest extends FormRequest
 
     public function rules()
     {
+
+        $nivelId = $this->route('nivel');
         return [
-            'nombre' => 'required|string|max:100|unique:cabana_niveles,nombre',
-            'descripcion' => 'nullable|string|max:255',
+            'nombre' => 'required|string|max:255|unique:cabana_niveles,nombre,' . $nivelId,
+            'descripcion' => 'required|string|max:1000',
         ];
     }
 

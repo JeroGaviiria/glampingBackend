@@ -1,37 +1,29 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Requests;
 
-use App\Models\Reserva;
-use App\Http\Requests\ReservaRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ReservaController extends Controller
+class ReservaRequest extends FormRequest
 {
-    public function index()
+    public function authorize()
     {
-        return Reserva::all();
+        return true;
     }
 
-    public function store(ReservaRequest $request)
+    public function rules()
     {
-        $reserva = Reserva::create($request->validated());
-        return response()->json($reserva, 201);
+        return [
+            'usuario_id' => 'required|exists:usuarios,id',
+            'cabana_id' => 'required|exists:cabanas,id',
+            'fecha' => 'required|date|after:today',
+        ];
     }
 
-    public function show(Reserva $reserva)
+    public function failedValidation(Validator $validator)
     {
-        return $reserva;
-    }
-
-    public function update(ReservaRequest $request, Reserva $reserva)
-    {
-        $reserva->update($request->validated());
-        return $reserva;
-    }
-
-    public function destroy(Reserva $reserva)
-    {
-        $reserva->delete();
-        return response()->json(null, 204);
+        throw new HttpResponseException(response()->json($validator->errors(), 422));
     }
 }

@@ -18,10 +18,12 @@ class UsuarioController extends Controller
             'nombre' => 'required|string|max:100',
             'email' => 'required|string|email|max:100|unique:usuarios',
             'password' => 'required|string|min:6',
-            'tipo' => 'required|in:administrador,cliente',
+            // Eliminamos la validación de 'tipo' aquí
         ]);
 
-        $usuario = Usuario::create($request->all());
+        // Creamos el usuario, estableciendo 'tipo' como 'cliente'
+        $usuario = Usuario::create(array_merge($request->all(), ['tipo' => 'cliente']));
+
         return response()->json($usuario, 201);
     }
 
@@ -31,15 +33,23 @@ class UsuarioController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $usuario = Usuario::findOrFail($id);
-        $usuario->update($request->all());
-        return response()->json($usuario, 200);
-    }
+{
+    // Buscar el usuario existente
+    $usuario = Usuario::findOrFail($id);
+
+    // Actualizar los campos del usuario con los datos proporcionados, 
+    // y asegurarte de que 'tipo' sea 'cliente' (si no es proporcionado en la solicitud)
+    $usuario->update(array_merge($request->all(), ['tipo' => 'cliente']));
+
+    // Retornar la respuesta con el usuario actualizado
+    return response()->json($usuario, 200);
+}
+
 
     public function destroy($id)
     {
         Usuario::destroy($id);
+
         return response()->json(null, 204);
     }
 }

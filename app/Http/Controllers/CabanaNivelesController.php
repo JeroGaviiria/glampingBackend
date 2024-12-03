@@ -17,20 +17,31 @@ class CabanaNivelesController extends Controller
         return CabanaNiveles::create($request->validated());
     }
 
-    public function show(CabanaNiveles $nivel)
-    {
-        return $nivel;
-    }
+    public function show($id)
+{
+    // Buscar el registro por su ID
+    $nivel = CabanaNiveles::findOrFail($id);
+    
+    // Devolver el registro encontrado
+    return response()->json($nivel);
+}
 
-    public function update(CabanaNivelesRequest $request, CabanaNiveles $nivel)
-    {
-        $nivel->update($request->validated());
-        return $nivel;
-    }
+    public function update(CabanaNivelesRequest $request, $id)
+{
+    // Buscar el registro por su ID
+    $nivel = CabanaNiveles::findOrFail($id);
 
-    public function destroy(CabanaNiveles $nivel)
+    // Actualizar el registro con los datos validados
+    $nivel->update($request->validated());
+
+    // Devolver la respuesta con el registro actualizado
+    return response()->json($nivel);
+}
+
+
+    public function destroy($id)
     {
-        $nivel->delete();
+        CabanaNiveles::destroy($id);
         return response()->json(null, 204);
     }
 }
